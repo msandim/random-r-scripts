@@ -7,20 +7,21 @@ set.seed(1)
 
 # Check if there are values missing
 library(Amelia)
-missmap(Default)
 
 # Check more info
 str(Default)
 summary(Default)
 
+missmap(Default)
+
 # What does sample do?
-sample(4, 2)
+#sample(4, 2)
 
 # Build training set:
 train.index <- sample(nrow(Default), 0.7 * nrow(Default))
 train <- Default[train.index,]
 
-# Build test set:
+# Build test set (why?):
 test <- Default[-train.index,]
 dim(train)
 dim(test)
@@ -41,6 +42,8 @@ glm.pred <- ifelse(glm.probs > 0.5, 'Yes', 'No')
 # Calculate overall accuracy:
 confusion <- table(glm.pred, glm.test = test$default)
 
+confusion
+
 overallAccuracy <- function(table)
 {
   (table[1,1] + table[2,2])/sum(table)
@@ -59,13 +62,13 @@ tpr <- function(table)
 }
 
 # Confirm the values:
-(2899 + 33)/3000
+#(2899 + 33)/3000
 overallAccuracy(confusion)
 
-2899/(2899+13)
+#2899/(2899+13)
 tnr(confusion)
 
-33/(33+55)
+#33/(33+55)
 tpr(confusion)
 
 # Number of 'Yes' in the train set:
@@ -92,10 +95,12 @@ calculateAuc(predict(glm.fit, test), test$default)
 glm.pred <- ifelse(glm.probs > .1, 'Yes', 'No')
 confusion2 <- table(glm.pred, glm.test = test$default)
 
+confusion2
+
 # TNR:
-2713/(2713 + 199)
+#2713/(2713 + 199)
 tnr(confusion2)
 
 # TPR:
-63/(63+25)
+#63/(63+25)
 tpr(confusion2)
